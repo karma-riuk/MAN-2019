@@ -1,0 +1,437 @@
+%{{{-----------------------------------Basics----------------------------------%
+
+%document class definition
+\documentclass[
+    11pt,
+    a4paper,
+    oneside,
+    headinlcude, footinclude,
+    twoside,
+]{report}
+
+
+%essential packages
+\renewcommand*\rmdefault{ppl}
+\usepackage[top=2.5cm,bottom=2.5cm,left=3cm,right=3cm]{geometry}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{xcolor}
+\usepackage{amssymb}
+
+
+%additional packages
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage[framemethod=Tikz]{mdframed}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{makecell} % to make thick hlines in the front page
+\usepackage[makeroom]{cancel}
+%}}}
+
+%{{{-----------------------------------Macros----------------------------------%
+
+\newcommand{\myImplies}[0]{\rightarrow}
+\newcommand{\powerset}[1]{\mathcal{P}(#1)}
+\newcommand{\tvect}[3]{%
+   \ensuremath{\Bigl(\begin{smallmatrix}#1\\#2\\#3\end{smallmatrix}\Bigr)}}
+\newcommand{\myVector}[3]{\begin{pmatrix}#1\\#2\\#3\end{pmatrix}}
+\newcommand{\ssi}[0]{\Longleftrightarrow}
+\newcommand{\markDate}[1]{\begin{flushright}#1\end{flushright}}
+\newcommand{\cqfd}[0]{
+    \begin{flushright}$\Box$\end{flushright}
+}
+%}}}
+
+%{{{----------------------------------Settings---------------------------------%
+
+\title{Maths 2B - Algèbre Linéaire}
+
+\author{Arn\`o Fauconnet}
+
+\setlength{\parindent}{0pt} %disable initial indent on first paragraph of sections in the whole doc
+
+% the style of the boxes
+\newmdenv[
+        roundcorner=10pt,
+        middlelinecolor=red,
+        backgroundcolor=gray!15,
+        linewidth=2pt,
+        frametitlerule=true]{highlightBox}
+
+% increases the space between paragraphs
+\setlength{\parskip}{.3em}
+
+\graphicspath{ {Maths_2B/figures/} }
+
+% header and footer settings
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,LO]{Arnaud Fauconnet}
+\fancyhead[CE,CO]{\textsc{Maths 2B}}
+\fancyhead[RE,RO]{MAN - Printemps 2019}
+\fancyfoot[CE,CO]{\leftmark}
+\fancyfoot[LE,RO]{\thepage}
+
+\renewcommand{\headrulewidth}{2pt}
+\renewcommand{\footrulewidth}{1pt}
+%}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----------------------------------------------------------------------------%
+%-------------------------------Text starts here-----------------------------%
+%----------------------------------------------------------------------------%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+\begin{titlepage}
+   \begin{center}
+       \vspace*{\fill}
+
+       {\Huge EPFL}\\ 
+%----------------------------------------------------------------------------%
+       \vfill
+       {\huge MAN}\\ [1em]
+       {\Large Mise à niveau}\\
+%----------------------------------------------------------------------------%
+        \vfill
+        \begin{tabularx}{\textwidth}{X}
+            \Xhline{3\arrayrulewidth}\\
+        \end{tabularx}\\ [2em]
+        {\Huge Maths 2B} \\ [1em]
+        \textsc{\huge Prepa-032(b)} \\ [2em]
+        \begin{tabularx}{\textwidth}{X}
+            \Xhline{3\arrayrulewidth}\\
+        \end{tabularx}\\ [2em]
+%----------------------------------------------------------------------------%
+        \vspace{.7cm}
+        {\large
+        \begin{tabularx}{.9\textwidth}{Xr}
+            \textit{Student:} & \textit{Professor:}\\
+            Arnaud \textsc{Fauconnet} & Simon \textsc{Bossoney}
+        \end{tabularx}}
+%----------------------------------------------------------------------------%
+        \vfill
+        {\Large Printemps - 2019}
+
+%----------------------------------------------------------------------------%
+        \vfill
+        \includegraphics[width=7cm]{epfl-logo}
+
+       \vfill
+   \end{center} 
+\end{titlepage} 
+\setcounter{chapter}{0}
+\chapter{Systèmes linéaires}
+\label{cha:systemes_lineaires}
+
+\section{Equations linéaires}
+\label{sec:equations_lineaires}
+
+\paragraph{Definition:} 
+\label{par:definition}
+
+Une \underline{équation linéaire}  à $n$ variables est une équation de type:
+
+$$ a_{1} x_{1} + a_{2} x_{2} + ... + a_{n} x_{n} = b$$
+
+où $a _{1}, ..., a _{n}, b \in \mathbb{R}$ sont \textbf{fixés} et où $x _{1},
+..., x _{n} \in \mathbb{R}$ \textbf{variables}.
+\\
+
+Si \underline{$b = 0$}, on dit que l'équation est homogène.
+
+Si \underline{$b \neq 0$}, on dit que l'équation est inhomogène.
+\\
+
+Une \textbf{solution} est donnée de $n$  nombres réels $x _{1}, ... ,x _{n}$
+tel que l'équation est satisfaite.
+
+La collection de $\mathcal{S}$ de toutes les solutions sera appelée
+\textbf{l'ensemble des solutions} 
+
+\paragraph{Exemple}
+
+\begin{equation} \label{eq:1}
+    x + 2y - 3z = 1 
+\end{equation}
+
+Équation linéaire à trois variables, $x, y, z, a _{1} = 1, a _{2} = 2, a _{3}
+= -3, b = 1$
+
+\paragraph{Resolution}
+
+(\ref{eq:1}) est équivalente à 
+
+$$ x = 1 - 2y + 3z$$
+
+Si on rassemble $x, y \ \textrm{et}\ z$ en une colonne $\tvect{x}{y}{z}$, on a
+que 
+
+$$ \mathcal{S} = \Bigg\{ \myVector{x}{y}{z} \in \mathbb{R} ^{3} \ \Bigg|
+\myVector{x}{y}{z} = \myVector{1}{0}{0} + y\myVector{-2}{1}{0} +
+z\myVector{3}{0}{1}, y, z \in \mathbb{R} \Bigg\} $$
+
+Choix $y = 1, z = 2$, 
+
+$$ \myVector{x}{y}{z} = \myVector{1}{0}{0} + \myVector{-2}{1}{0} +
+\myVector{6}{0}{1} = \myVector{5}{1}{2} $$
+
+\paragraph{Remarque}
+(\ref{eq:1}) est équivalente à $2y = 1 -x + 3z \ssi y = \frac{1}{2} - \frac{1}{2}x
++ \frac{3}{2}z$ 
+
+\paragraph{On a alors:}
+$$ \mathcal{S}' = \Bigg\{ \myVector{x}{y}{z} \in \mathbb{R} ^{3} \ \Bigg|
+\myVector{x}{y}{z} = \myVector{0}{\frac{1}{2}}{0} + x\myVector{1}{-\frac{1}{2}}{0} +
+z\myVector{0}{\frac{3}{2}}{1}, x, z \in \mathbb{R} \Bigg\} $$
+
+$\mathcal{S} = \mathcal{S}'\ \textrm{si}\  x = 1, z = 2$, on a
+
+$$ \myVector{x}{y}{z} = \myVector{1}{\frac{1}{2}}{0} + \myVector{1}{-\frac{1}{2}}{0} +
+\myVector{0}{3}{2} = \myVector{1}{3}{2} $$
+
+\markDate{4/03/2019}
+
+\section{Système d'équation}
+\label{sub:systeme_d_equation}
+
+\paragraph{Definition}
+\label{par:definition}
+
+Un \textbf{système d'équation} linéaire est une famille de $m$ équation
+linéaires à $n$ variables.\
+
+
+\[
+    \begin{split}
+    &a_{11}\cdot x _{11} + ... + a_{1n} \cdot x_{1n} = b_{1}\\
+    & \quad \vdots \\
+    &a_{m1}\cdot x _{m1} + ... + a_{mn} \cdot x_{mn} = b_{m}\\
+    \end{split}
+\]
+
+où $\{a_{ij}\}_{1 \leq i \leq m, 1 \leq j \leq m}$  et $\{b_{j}\}_{1 \leq j
+\leq m}$ sont des \textbf{coefficients} (réels) du système.
+
+\begin{center}
+    $a_{i j}$
+
+    $i$: ligne, $j$: colonne
+\end{center}
+
+Une solution est un $n$-tuple $\myVector{x_{1}}{\vdots}{x_{n}}$ qui satisfait
+les $m$ équation simultanément.
+
+Un système linéaires est complètement déterminé par ses coefficients.
+
+Les coefficients seront dit "\textbf{triangulaire supérieur}" si 
+
+$$a_{ij} = 0 \textrm{ dès que } i>j$$
+
+\paragraph{Exemples}
+\label{par:exemples}
+
+\[
+    \begin{split}
+        {\color{blue} i = 1}&\quad x + y - z = 2\\
+        {\color{blue} i = 2}&\quad {\color{red} 0x +} 2y + 3z = 1\\
+        {\color{blue} i = 3}&\quad {\color{red} 0x + 0y +} z = 4\\
+    \end{split}
+\]
+
+On "remonte" le système:
+
+\[
+    \begin{split}
+        {\color{blue} i = 2}&\quad  2y + 12 = 1 \iff 2y = -11 \iff y = -\frac{11}{2}\\
+        {\color{blue} i = 1}&\quad  x - \frac{11}{2} - 4 = 2 \iff x = \frac{23}{2}\\
+        \\
+        \implies S: \myVector{x}{y}{z} = \myVector{\frac{23}{2}}{\frac{11}{2}}{4}
+    \end{split}
+\]
+
+On peut collecter les coefficients en un tableau:
+
+\[
+    \begin{split}
+    5x - 2y + z &= 2\\
+    3x + y + 2z - 4t &= 0\\
+    2y + z + 2t &= 1
+    \end{split}
+\]
+
+\begin{equation}
+    \label{eq:2}
+    \left(\begin{array}{cccc|c}
+         5 & -2 & 1 & 0 & 2\\
+         3 & 1 & 2 & -4 & 0\\
+         0 & 2 & 1 & 2 & 1\\
+    \end{array}\right)
+\end{equation}
+
+\begin{itemize}
+    \item L'échange de deux lignes laisse l'ensemble des solutions $S$
+        invariant.
+
+    \item L'échange de deux colonnes (avec l'échange de variable
+        correspondantes) laisse $S$ invariant.
+
+    \item La multiplication d'une ligne entière par un nombre \textbf{non nul} 
+        laisse $S$ invariant.
+
+    \item L'addition de deux lignes laisse $S$ invariant.
+
+    \item \textbf{À ne pas faire}:
+        \begin{itemize}
+            \item multiplier une colonne par un nombre
+            \item additionner deux colonnes
+        \end{itemize}
+\end{itemize}
+
+
+\[
+    \begin{split}
+        (\ref{eq:2}) \quad \sim \quad 
+        \left(\begin{array}{cccc|c}
+             1 & -\frac{2}{5} & \frac{1}{5} & 0 & \frac{2}{5}\\
+             3 & 1 & 2 & -4 & 0\\
+             0 & 2 & 1 & 2 & 1\\
+        \end{array}\right) 
+        &\quad L_{1} \leftarrow \frac{1}{5} L_{1}\\
+        (\ref{eq:2}) \quad \sim \quad 
+        \left(\begin{array}{cccc|c}
+             1 & -\frac{2}{5} & \frac{1}{5} & 0 & \frac{2}{5}\\
+             0 & \frac{11}{5} & \frac{7}{5} & -4 & -\frac{6}{5}\\
+             0 & 2 & 1 & 2 & 1\\
+        \end{array}\right) 
+        &\quad L_{2} \leftarrow L_{2} - 3 L_{1}\\
+        (\ref{eq:2}) \quad \sim \quad 
+        \left(\begin{array}{cccc|c}
+             1 & -\frac{2}{5} & \frac{1}{5} & 0 & \frac{2}{5}\\
+             0 & \frac{11}{5} & \frac{7}{5} & -4 & -\frac{6}{5}\\
+             0 & 2 & 1 & 2 & 1\\
+        \end{array}\right) 
+        &\quad L_{2} \leftarrow L_{2} - 3 L_{1}\\
+        (\ref{eq:2}) \quad \sim \quad 
+        \left(\begin{array}{cccc|c}
+             1 & -\frac{2}{5} & \frac{1}{5} & 0 & \frac{2}{5}\\
+             0 & 1 & \frac{7}{11} & - \frac{20}{11} & -\frac{6}{11}\\
+             0 & 0 & 1 & - \frac{62}{3} & - \frac{23}{3}\\
+         \end{array}\right) 
+         &\quad \begin{array}{c} L_{2} \leftarrow \frac{5}{11} L_{2} \\ L_{3}
+         \leftarrow L_{3} - 2 L_{2}\end{array}\\
+    \end{split}
+\]
+
+\[
+    \begin{split}
+        z - \frac{62}{3}t = - \frac{23}{3} &\iff z = - \frac{23}{3} + \frac{62}{3}t\\
+        y + \frac{7}{11} - \frac{20}{11}  t = - \frac{6}{11} &\iff y = -
+        \frac{6}{11} - \frac{7}{11}  z + \frac{20}{11}  t\\
+        y &= - \frac{6}{11} + \frac{161}{33} - \frac{441}{33}  t +
+        \frac{20}{11}  t\\
+        y &= \frac{143}{33} - \frac{374}{33}  t\\
+        x - \frac{2}{5}y + \frac{1}{5}z = \frac{2}{5} &\iff x = \frac{2}{5} -
+        \frac{2}{5} y + \frac{1}{5}z\\
+        x = \frac{2}{5} + \frac{2}{5} \cdot \left(\frac{143}{33} - \frac{374}{33}t\right)&
+        - \frac{1}{5} \cdot \left( - \frac{23}{3} + \frac{62}{3} t\right)\\
+        x = \frac{2}{5} + \frac{286}{165} - &\frac{748}{165} t + \frac{25}{15}
+        - \frac{62}{15}\\
+        \\
+        \left(\begin{array}{c}x \\y \\z \\t\end{array}\right) = 
+        \left(\begin{array}{c}\frac{605}{165} \\\frac{143}{33} \\-\frac{22}{3} \\0\end{array}\right)
+            &+t \cdot
+        \left(\begin{array}{c}-\frac{1430}{165} \\-\frac{374}{33} \\-\frac{62}{3} \\1\end{array}\right)
+    \end{split}
+\]
+
+\paragraph{Résumé}
+\label{par:resume}
+
+Supposons que le système d'équation est équivalent à un système triangulaire
+supérieur à $k$ équation non nul à un $n$ variables.
+
+\begin{itemize}
+    \item L'ensemble des solutions est paramétré par $n-k$ paramètres (ex. $4-3=1$)
+    \item Une solution a la forme:
+        \[
+            \left(\begin{array}{c}x_{1} \\\vdots \\x_{n}\end{array}\right) =
+            \left(\begin{array}{c}c_{1} \\\vdots \\c_{n}\end{array}\right) + 
+            \lambda_{1} \left(\begin{array}{c}v_{11} \\\vdots \\v_{1n}\end{array}\right) + \ldots + 
+            \lambda_{n} \left(\begin{array}{c}v_{n n-k} \\\vdots \\v_{n n-k}\end{array}\right)
+        \]
+\end{itemize}
+
+\paragraph{Exemple}
+\label{par:exemple}
+
+\[
+    \left(\begin{array}{c}c_{1} \\c_{2} \\c_{3} \\c_{4}\end{array}\right) = 
+    \left(\begin{array}{c}\frac{605}{165} \\\frac{143}{33} \\-\frac{22}{3} \\0\end{array}\right),
+    \quad n - k = 1, \quad 
+    \left(\begin{array}{c}v_{1} \\v_{2} \\v_{3} \\v_{4}\end{array}\right) = 
+    \left(\begin{array}{c}-\frac{1430}{165} \\-\frac{374}{33} \\-\frac{62}{3} \\1\end{array}\right)
+\]
+
+
+\begin{itemize}
+    \item Si $\left(\begin{array}{c}x_{1}\\ \vdots\\ x_{n}\end{array}\right)$
+        et $\left(\begin{array}{c}y_{1}\\ \vdots\\ y_{n}\end{array}\right)$
+        sont deux solutions alors
+        $$t \cdot \left(\begin{array}{c}x_{1}\\ \vdots\\ x_{n}\end{array}\right)
+         + (1-t) \cdot \left(\begin{array}{c}y_{1}\\ \vdots\\ y_{n}\end{array}\right)
+            $$
+        est encore une solution ($\forall t \in \mathbb{R}$)
+
+        $S$ est, dans ce cas, dit "\textbf{convexe}"
+
+    \item Si $\left(\begin{array}{c}x_{1}\\ \vdots\\ x_{n}\end{array}\right)$
+        et $\left(\begin{array}{c}y_{1}\\ \vdots\\ y_{n}\end{array}\right)$
+        sont deux solutions alors
+        $$\left(\begin{array}{c}x_{1}\\ \vdots\\ x_{n}\end{array}\right)
+         - \left(\begin{array}{c}y_{1}\\ \vdots\\ y_{n}\end{array}\right)$$
+        est une solution à l'\textbf{équation homogène} (i.e. le système avec
+        $b_{1} = \ldots = b_{n} = 0$)
+
+    \item La partie paramètre de $S$ est l'ensemble des solutions un système
+        homogène
+
+    \item Cas où le système n'a pas de solutions ($S = \emptyset$)
+        $$
+            \left(\begin{array}{ccccc|c}
+                 1 & x & x & \ldots & x &x\\
+                 0 & 1 & x & x & x & x\\
+                 \vdots & \ldots & 1 & x & x & x\\
+                 {\color{red} 0} & {\color{red} 0} & {\color{red} 0} & {\color{red} 0} &{\color{red}  0} & {\color{red} x} \\
+            \end{array}\right) 
+        $$
+
+    \item Considérons 
+
+        $$
+        \left\{\begin{array}{l}x - 3y + z = 1\\ x - 2y = 0 \\ x =1 \end{array} \right.
+        \sim
+        \left(\begin{array}{ccc|c}
+             1 & -3 & 1 & 1\\
+             1 & -2 & 0 & 0 \\
+             1 & 0 & 0 & 1 \\
+        \end{array}\right) 
+        \sim
+        \left( \begin{array}{ccc|c}
+             1 & -3 & 1 & 1\\
+             0 & -2 & 1 & 0 \\
+             0 &  0 & 1 & 1 
+        \end{array} \right) \quad  C_{1} \leftrightarrow C_{3}
+        $$
+
+\end{itemize}
+
+
+ missing parts TODO: check the drive lesson 3 and 4 (normally)
+
+\end{document}
