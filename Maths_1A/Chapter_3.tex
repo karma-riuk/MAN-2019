@@ -1,0 +1,517 @@
+%{{{-----------------------------------Basics----------------------------------%
+
+%document class definition
+\documentclass[
+    11pt,
+    a4paper,
+    oneside,
+    headinlcude, footinclude,
+    twoside,
+]{report}
+
+
+%essential packages
+\renewcommand*\rmdefault{ppl}
+\usepackage[top=2.5cm,bottom=2.5cm,left=3cm,right=3cm]{geometry}
+\usepackage[english]{babel} \usepackage[T1]{fontenc} \usepackage[utf8]{inputenc} \usepackage{xcolor} \usepackage{amssymb}
+
+
+%additional packages
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage[framemethod=Tikz]{mdframed}
+\usepackage{tikz}
+\usepackage{enumerate}
+\usepackage{pgf,tikz,pgfplots} % for the transfer from geogebra to tikz
+\usepackage{mathrsfs}% for the transfer from geogebra to tikz
+\usepackage{graphicx}
+\usepackage[makeroom]{cancel}
+\usepackage{fancyhdr}
+\usepackage{makecell} %to have thick hlines in the front page
+\usepackage{tabularx}
+
+%}}}
+
+%{{{-----------------------------------Macros----------------------------------%
+
+\newcommand{\myImplies}[0]{\rightarrow}
+
+\newcommand{\powerset}[1]{\mathcal{P}(#1)}
+
+\newcommand{\tvect}[3]{%
+   \ensuremath{\Bigl(\begin{smallmatrix}#1\#2\#3\end{smallmatrix}\Bigr)}}
+
+\newcommand{\myVector}[3]{\begin{pmatrix}#1\#2\#3\end{pmatrix}}
+
+\newcommand{\tq}[0]{\ \textrm{ t.q. }\ }
+
+\newcommand{\markDate}[1]{\begin{flushright}#1\end{flushright}}
+
+\newcommand{\cqfd}[0]{\begin{flushright}$\Box$\end{flushright}}
+
+\renewcommand{\vec}[1]{\overrightarrow{#1}}
+
+\renewcommand{\to}[0]{\longrightarrow}
+
+\renewcommand{\bar}[1]{\overline{#1}}
+
+\def\getangle(#1)(#2)#3{
+    \begingroup
+        \pgftransformreset
+        \pgfmathanglebetweenpoints{\pgfpointanchor{#1}{center}}{\pgfpointanchor{#2}{center}}
+        \expandafter\xdef\csname angle#3\endcsname{\pgfmathresult}
+    \endgroup
+}
+
+\newcommand\Warning{
+    \makebox[1.4em][c]{
+    \makebox[-5.5pt][c]{\raisebox{.2em}{!}}
+    \makebox[0pt][c]{\color{red}\huge$\bigtriangleup$}}
+}
+%}}}
+
+%{{{----------------------------------Settings---------------------------------%
+
+\title{Maths 1A - AICC}
+
+\author{Arnò Fauconnet}
+
+\setlength{\parindent}{0pt} %disable initial indent on first paragraph of sections in the whole doc
+
+% the style of the boxes
+\newmdenv[
+        roundcorner=10pt,
+        middlelinecolor=red,
+        backgroundcolor=gray!15,
+        linewidth=2pt,
+        frametitlerule=true]{highlightBox}
+
+% increases the space between paragraphs
+\setlength{\parskip}{.3em}
+
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows}%for the transfer from geogebra to tikz
+\pgfplotsset{compat=1.15}
+
+
+% Geogebras wierd colors xD
+\definecolor{ffffff}{rgb}{1.,1.,1.}
+\definecolor{qqqqff}{rgb}{0.,0.,1.}
+\definecolor{qqffqq}{rgb}{0.,1.,0.}
+\definecolor{xfqqff}{rgb}{0.4980392156862745,0.,1.}
+\definecolor{ffqqtt}{rgb}{1.,0.,0.2}
+\definecolor{ududff}{rgb}{0.30196078431372547,0.30196078431372547,1.} 
+\definecolor{ffqqqq}{rgb}{1.,0.,0.} 
+\definecolor{xdxdff}{rgb}{0.49019607843137253,0.49019607843137253,1.}
+\definecolor{zzttqq}{rgb}{0.6,0.2,0.}
+\definecolor{uuuuuu}{rgb}{0.26666666666666666,0.26666666666666666,0.26666666666666666}
+\definecolor{wwccff}{rgb}{0.4,0.8,1.}
+\definecolor{qqttcc}{rgb}{0.,0.2,0.8}
+\definecolor{ffwwzz}{rgb}{1.,0.4,0.6}
+\definecolor{ttqqqq}{rgb}{0.2,0.,0.}
+
+\tikzstyle{every node}=[font=\large]
+
+\graphicspath{ {Maths_1A/figures/} }
+
+% header and footer settings
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,LO]{Arnaud Fauconnet}
+\fancyhead[CE,CO]{\textsc{Maths 1A}}
+\fancyhead[RE,RO]{MAN - Printemps 2019}
+\fancyfoot[CE,CO]{\leftmark}
+\fancyfoot[LE,RO]{\thepage}
+
+\renewcommand{\headrulewidth}{2pt}
+\renewcommand{\footrulewidth}{1pt}
+%}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----------------------------------------------------------------------------%
+%-------------------------------Text starts here-----------------------------%
+%----------------------------------------------------------------------------%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+\begin{titlepage}
+   \begin{center}
+       \vspace*{\fill}
+
+       {\Huge EPFL}\\ 
+%----------------------------------------------------------------------------%
+       \vfill
+       {\huge MAN}\\ [1em]
+       {\Large Mise à niveau}\\
+%----------------------------------------------------------------------------%
+        \vfill
+        \begin{tabularx}{\textwidth}{X}
+            \Xhline{3\arrayrulewidth}\\
+        \end{tabularx}\\ [2em]
+        {\Huge Maths 1A} \\ [1em]
+        \textsc{\huge Prepa-031(a)} \\ [2em]
+       \begin{tabularx}{\textwidth}{X}
+            \Xhline{3\arrayrulewidth}\\
+        \end{tabularx}
+%----------------------------------------------------------------------------%
+        \vspace{.7cm}
+        {\large
+        \begin{tabularx}{.9\textwidth}{Xr}
+            \textit{Student:} & \textit{Professor:}\\
+            Arnaud \textsc{Fauconnet} & Guido \textsc{Burmeister}
+        \end{tabularx}}
+%----------------------------------------------------------------------------%
+        \vfill
+        {\Large Printemps - 2019}
+
+%----------------------------------------------------------------------------%
+        \vfill
+        \includegraphics[width=7cm]{epfl-logo}
+
+       \vfill
+   \end{center} 
+\end{titlepage} 
+\setcounter{chapter}{2}
+\chapter{Polynôme réels}
+\label{cha:polynome_reels}
+
+\section{Définition et opérations}
+
+\paragraph{Définition:}
+
+Un polynôme en $x$ à coefficients réels est une combinaison linéaire de
+puissance de $x$.
+$$P(x) = a_{n}x^{n}+a_{n-1}x^{n-1}+...+a_{1}x^{1} + a_{0}$$
+avec $a_{k} \in \mathbb{R}, k= 0, ..., n$
+
+On note $P \in \mathbb{R}[\ x\ ]$ {\color{red} "ensemble de polynôme en $x$ à
+coefficients réels"}
+
+Le degré de $P$, noté $\deg P$, est la plus grande puissance de $x$ dont le
+coefficient est non nul.
+
+\paragraph{Convention}
+\label{par:convention}
+
+Le polynôme nul est de degré $-\infty$ 
+
+Le sous-ensemble de $\mathbb{R}[\ x\ ]$ des polynômes de degré inférieur ou
+égale à $n \in \mathbb{N}$ est notée $\mathbb{P}_{n} [\ x\ ]$
+
+$$\mathbb{P}_{n}[\ x\ ] = \{ P \in \mathbb{R}[\ x\ ] | \deg P \leq n\}$$
+
+\paragraph{Définition:}
+
+La somme de 2 polynômes $P$ et $Q$ se note $P + Q$. On l'obtient en
+additionnant  les coefficients d'une même puissance 
+
+\paragraph{Exemple:}
+
+\[
+    \begin{split}
+        P(x) & = x^{3} + 3 x^{2} + 5x - 6\\
+        Q(x) &= -x^{3} - 2x^{2} + 3
+    \end{split}
+\]
+
+Alors 
+$$(P+Q) (x) = P(x) + Q(x) = x^{2} + 5x -3$$
+
+\paragraph{Remarque:}
+
+$$\deg (P+Q) \leq \max(\deg P, \deg Q)$$
+
+\paragraph{Définition:}
+
+L'amplification par $\lambda \in \mathbb{R}$ d'un polynôme $P$ donne un
+polynôme noté $\lambda P$. On obtient en multipliant chaque coefficient par $\lambda$.
+
+\paragraph{Exemple:}
+
+$$P(x) = 3x^{2}+5x-6\quad \quad \lambda = -\frac{2}{3}$$
+
+Alors $$(\lambda P)(x) = \lambda \cdot P(x) = -2x^{2} - \frac{10}{3}x + 4$$
+
+\paragraph{Remarques:}
+
+\begin{enumerate}
+
+    \item 
+        \[
+            \begin{split}
+                \text{Si } \lambda \neq 0 & \iff \deg(\lambda P) = \deg P\\
+                \text{Si } \lambda = 0 & \iff \deg(\lambda P) = 0
+            \end{split}
+        \]
+
+    \item Avec les lois (addition et amplification), $\mathbb{R}[\ x\ ]$ et
+        $\mathbb{P}_{n}[\ x\ ]$ sont des espaces vectoriels.
+\end{enumerate}
+
+
+
+\paragraph{Définition:}
+
+Multiplication par un monôme.
+
+Soit $$P(x) = a_{n}x^{n} + a_{n-1}x^{n-1} + ... + a_{1}x + a_{0}$$ et $$Q(x) =
+x^{n}$$
+un monôme.
+
+Leur produit est un polynôme. On l'obtient en distribuant la multiplication par
+$x^{n}$.
+$$x^{m}(a_{n}x^{n} + ...+ a_{0}) = a_{n}x^{n+m} + a_{n-1}x^{n-1+m} + ... +
+a_{0}x^{m}$$
+
+\paragraph{Remarque:}
+
+$$\deg (x^{m}P) = m + \deg P$$
+
+
+\paragraph{Définition:}
+
+Soient $P$ et $Q$ deux polynômes. Leur produit noté $P \cdot Q$. On l'obtient
+par distribution des produits et un regroupant les coefficients d'une même
+puissance de $x$.
+
+\paragraph{Exemple:}
+
+$$P(x) = 3x^{2} + 5x -6 \quad Q(x) = -x^{3} -2x^{2} +3$$
+
+Alors
+\[
+    \begin{split}
+        (PQ)(x) & = P(x) \cdot Q(x)\\
+        &= (3x^{2} + 5x - 6) \cdot(-x^{3} -2x^{2} + 3)\\
+        &=-3x^{5}-6x^{4}+9x^{2} - 5x^{4} -10x^{3}+15x+6x^{3}+12x^{2}-18\\
+        &=-3x^{5} -11 x^{4} -4x^{3} +21 x^{2} + 15x -18\\
+    \end{split}
+\]
+
+\paragraph{Remarque:}
+
+$$\deg (PQ) = \deg P + \deg Q$$
+
+\paragraph{Définition:}
+
+Soit $$P(x) = a_{n}x^{n}+ a_{n-1}\cdot x^{n-1}+ ... +  a_{0} \in \mathbb{R}[\
+x\ ]$$
+
+Alors
+\[
+    \begin{split}
+        P: \mathbb{R} & \to \mathbb{R}\\
+        x&\mapsto P(x) \quad \quad \text{{\color{red} "image par $P$ de x"}}
+    \end{split}
+\]
+
+
+est une fonction polynomiale.
+
+En particulier, l'évaluation de $P$ en $x_{0} \in \mathbb{R}$ s'écrit 
+$$P(x_{0}) = a_{n}x_{0}^{n}+ a_{n-1}\cdot x_{0}^{n-1}+ ... +  a_{0} $$
+{\color{red} $P$ évalué en $x_{0}$}
+
+
+
+\paragraph{Exemple:}
+
+$$P(x) = x^{2} -5x +6 \quad \text{ et } \quad x_{0} = -2$$
+
+Alors $$P(x_{0}) = (-2)^{2} - 5 (-2) + 6 = 20$$
+
+
+\section{Binôme de Newton}
+\label{sec:binome_de_newton}
+
+\paragraph{Définition:}
+
+Le polynôme en $x$.
+$$P_{n}(x) = (x+a)^{n}, \quad a \in \mathbb{R},  n \in \mathbb{R}$$
+est appelé binôme de Newton ( $x+a :$ binôme)
+
+
+Calculons...
+
+ TODO: this table is bugged
+\begin{highlightBox}[frametitle={Triangle de Pascal}]
+$$ \begin{tabular}{rllll|llll}
+n = 0: \quad& (x+a)^{0} = 1 &&&&1 &  &  & \\
+n = 1: \quad& (x+a)^{1} = x &+ a&&&1 & 1 &  & \\
+n = 2: \quad& (x+a)^{2} = x^{2} &+ 2ax &+ a^{2}&&1 & 2 & 1 & \\
+n = 3: \quad& (x+a)^{3} = x^{3} &+ 3 ax^{2} &+ 3a^{2}x &+ a^{3}&1 & 3 & 3 & 1\\
+\end{tabular} $$
+\end{highlightBox}
+
+
+\paragraph{Définition:}
+
+On note $C^{k}_{n}$ le nombre de manières de choisir un sous-ensemble à $k$
+éléments dans un ensemble à $n$ éléments.
+
+On peut montre que $$C^{k}_{n} = \frac{n!}{k!\cdot (n-k)!}$$
+où $$k!  k \cdot (k-1) \cdot (k-2) \cdot ... \cdot 2 \cdot 1$$
+est dit "$k$-factorielle".
+
+On pose  $$0! = 1$$ et $$C^{0}_{n} = 1 = C^{0}_{0}$$
+
+
+\paragraph{Remarque:}
+Une factorielle est vite très grande...
+
+On calcul plutôt: 
+
+\[
+    \begin{split}
+        C^{k}_{n} &= \frac{n!}{k! \cdot (n-k)!} = \frac{n \cdot (n-1) \cdot ... \cdot
+        (n-k+1) \cdot {\color{red}\cancel{{\color{black} (n-k)!}}}}{k! {\color{red}\cancel{{\color{black} (n-k)!}}}}\\
+        & = \frac{n \cdot (n-1) \cdot ... \cdot (n-k+1)}{k \cdot (k-1) \cdot ... \cdot 1}
+        {\color{white} \quad \frac{{\color{red} \leftarrow k\text{ facteurs}}}{{\color{red} \leftarrow k\text{ facteurs}}}}
+    \end{split}
+\]
+
+\paragraph{Propriétés:}
+
+\begin{enumerate}
+    \item $C^{k}_{n} = C^{n-k}_{n}, \quad k = 0, ..., n$
+    \item $C^{k}_{n} = C^{k-1}_{n-1} + C^{k}_{n-1}, \quad k = 1, ..., n-1$
+    \item $C^{0}_{n} + C^{1}_{n} + C^{2}_{n} +...+ C^{n-1}_{n} + C^{n}_{n} =
+        \sum^{n}_{k=0} C^{k}_{n} = 2^{n} $
+
+\end{enumerate}
+\paragraph{Corollaire:}
+    
+Le développement du binôme de Newton donne:
+$$(x+a)^{n} = C^{0}_{n} a^{0} x^{n} + C^{1}_{n} a^{1} x^{n-1} + C^{2}_{n} a^{2} x^{n-2}+ ...+ C^{k}_{n} a^{k} x^{n-k} +...+ C^{n-1}_{n} a^{n-1} x^{1} + C^{n}_{n} a^{n} x^{0} $$
+$$= \sum^{n}_{k=0} C^{k}_{n} a^{k}x^{n-k} \quad \text{{\color{red}
+remarque: il y a n+1 termes}}$$
+
+En effet , dnas le développement de $$(x+a)^{n} = \underbrace{(x+a) \cdot (x+a) \cdot ...\cdot (x+a)}_{n \text{ facteurs } }$$
+le terme $a^{k}x^{n-k}$ apparait $C^{k}_{n}$ fois, on a à choisir $k$ fois le a
+et du coup on a $n-k$ fois le $x$.
+
+\paragraph{Exemple:}
+
+Développer
+\[
+    \begin{split}
+        (x - 1)^{6} &= C^{0}_{6}(-1)^{0}x^{6} + C^{1}_{6}(-1)^{1}x^{5} + C^{2}_{6}(-1)^{2}x^{4} + C^{3}_{6}(-1)^{3}x^{3} + C^{4}_{6}(-1)^{4}x^{2} + C^{5}_{6}(-1)^{5}x^{1} + C^{6}_{6}(-1)^{6}x^{0}\\
+        &= x^{6} - 6x^{5} + 15 x^{4} -20x^{3}+15x^{2} -6x +1 
+    \end{split}
+\]
+
+\paragraph{Exemples:}
+
+\begin{enumerate}
+    \item Donner le coefficient de $x^{127}$ dans $(x+2)^{129}$.
+
+        Le terme en $x^{127}$ est ($k = 2$)
+
+        $$C^{2}_{129} 2^{2}x^{127} = \frac{129\cdot 128}{2-1} \cdot 2^{2} x^{127} =
+        33024 x^{127}$$
+
+    \item Terme en $x^{8}$ dans $(\overbrace{4x^{3}}^{x} + \overbrace{\frac{3}{x^{2}}}^{a})^{11}$
+    
+        Le terme général ($(k+1)^{e}$ terme) est $$C^{k}_{n} \left(\frac{3}{x^{2}}\right)^{k}
+        \cdot (4x^{3})^{n-k} = C_{11}^{k} 3^{k} 4^{11-k} x^{-2k} x^{3(11-k)}$$
+
+        Il faut trouver $$k \tq 33-5k = 8 \quad (k = 0, 1, ..., 11)$$
+        $$k = 5$$
+
+        D'où le terme en $x^{8} : C^{5}_{11}3^{5}4^{11-5}x^{8}= ...$
+\end{enumerate}
+
+\section{Zéro, schéma de Hörmer, multiplication}
+\label{sec:zero_schema_de_hormer_multiplication}
+
+\paragraph{Théorème:}
+
+Soient $P$ un polynôme avec $\deg P \geq 1$ et $x_{0} \in \mathbb{R}$. Alors il
+existe un unique polynôme $$F \tq P(x) = F(x) \cdot (x-x_{0}) + P(x_{0})$$
+
+\paragraph{Remarques:}
+
+\begin{itemize}
+    \item $\deg F = \deg P -1$
+    \item Il est un cas particulier de division euclidienne 
+\end{itemize}
+
+
+En effet, notons $$P(x) = a_{n}x^{n} + a_{n-1}x^{n-1} + ... + a_{1} x + a_{0}$$
+et $$F(x) = b_{n-1}x^{n-1} +b_{n-2}x^{n-2} + ... + b_{0}$$
+
+Alors 
+
+\[
+    \begin{split}
+        P(x) &= F(x) \cdot (x-x_{0}) + r \quad \quad \quad \quad \quad \quad
+        \quad \quad \quad \quad \quad \quad \quad \quad r\text{: à déterminer}\\
+        &= b_{n-1}x^{n} + b_{n-2}x^{n-1} + ... + b_{0}x - x_{0}b_{n-1}x^{n-1} -
+        x_{0}b_{n-2}x^{n-2} - ... -x_{0}b_{0}
+    \end{split}
+\]
+
+
+ TODO: this table is bugged
+$$
+\begin{tabular}{rll}
+b_{n-1} &= a_{n} & {\color{red} \cdot x^{n}_{0}}\\
+b_{n-2} &= a_{n-1} + x_{0}b_{n-1} & {\color{red} \cdot x^{n-1}_{0}}\\
+b_{n-3} &= a_{n-2} + x_{0}b_{n-2} & {\color{red} \cdot x^{n-2}_{0}}\\
+&\vdots\\
+r &= a_{0} + x_{0}b_{0} & {\color{red} \cdot 1}\\
+\end{tabular}
+$$
+
+En additionnant toute les lignes les, les $b_{k}$ tombent
+
+Donc les $b_{k}$ existent (uniques) et $r = P(x_{0})$
+
+Ce processus est résumé dans le schéma de Hörner
+
+ photo of table 
+
+\paragraph{Exemple:}
+
+Division euclidienne de $$P(x) = 4x^{3} + 2$$ par $$x+2$$
+$x_{0} = -2$
+
+ second table in photo 
+
+Ainsi : 
+$$4x^{3} + 2 = (4x^{2} - 8 + 16) \cdot (x+2) {\color{red}\underbrace{{\color{black}-30}}_{P(-2)}}$$
+
+
+\paragraph{Corollaire:}
+
+Le reste de la division de $P(x)$ par $x-x_{0}$ est $P(x_{0})$.
+
+\paragraph{Définition:}
+
+Soit $P \in \mathbb{R}[\ x\ ]$. $x_{0}$ est un zéro de $P$ (ou racine) si $P(x_{0})
+= 0$.
+
+\paragraph{Corollaire:}
+
+$x_{0}$ est un zéro de $P(x)$ si et seulement si $P$ est divisible par $x -
+x_{0}$.
+
+\paragraph{Exemple:}
+
+$$x_{0} = -1 $$ est racine évidente de $$P(x) = 3x^{3} - 2 x^{2} +4x + 9$$
+$$P(-1) = 0$$ Alors $P(x)$ est divisible par $$x - x_{0} = x + 1$$
+
+
+Pour trouver la factorisation: diviser ou utiliser le schéma de Hörner.
+
+\paragraph{Définition:}
+
+Soit $P$ un polynôme, $\deg P \geq 1$. Si $x_{0}$ est un zéro de $P$, il existe
+$n \in \mathbb{N}^{*}$, appelé la multiplicité de $x_{0}$, tel que $$P(x) =
+(x-x_{0})^{n} Q(x)$$
+avec $$Q(x_{0}) \neq 0$$
+et $$\deg Q = \deg P -n$$
+
+\end{document}

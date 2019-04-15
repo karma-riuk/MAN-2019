@@ -1,0 +1,1386 @@
+%{{{-----------------------------------Basics----------------------------------%
+
+%document class definition
+\documentclass[
+    11pt,
+    a4paper,
+    oneside,
+    headinlcude, footinclude,
+    twoside,
+]{report}
+
+
+%essential packages
+\renewcommand*\rmdefault{ppl}
+\usepackage[top=2.5cm,bottom=2.5cm,left=3cm,right=3cm]{geometry}
+\usepackage[english]{babel} \usepackage[T1]{fontenc} \usepackage[utf8]{inputenc} \usepackage{xcolor} \usepackage{amssymb}
+
+
+%additional packages
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage[framemethod=Tikz]{mdframed}
+\usepackage{tikz}
+\usepackage{enumerate}
+\usepackage{pgf,tikz,pgfplots} % for the transfer from geogebra to tikz
+\usepackage{mathrsfs}% for the transfer from geogebra to tikz
+\usepackage{graphicx}
+\usepackage[makeroom]{cancel}
+\usepackage{fancyhdr}
+\usepackage{makecell} %to have thick hlines in the front page
+\usepackage{tabularx}
+
+%}}}
+
+%{{{-----------------------------------Macros----------------------------------%
+
+\newcommand{\myImplies}[0]{\rightarrow}
+
+\newcommand{\powerset}[1]{\mathcal{P}(#1)}
+
+\newcommand{\tvect}[3]{%
+   \ensuremath{\Bigl(\begin{smallmatrix}#1\#2\#3\end{smallmatrix}\Bigr)}}
+
+\newcommand{\myVector}[3]{\begin{pmatrix}#1\#2\#3\end{pmatrix}}
+
+\newcommand{\tq}[0]{\ \textrm{ t.q. }\ }
+
+\newcommand{\markDate}[1]{\begin{flushright}#1\end{flushright}}
+
+\newcommand{\cqfd}[0]{\begin{flushright}$\Box$\end{flushright}}
+
+\renewcommand{\vec}[1]{\overrightarrow{#1}}
+
+\renewcommand{\to}[0]{\longrightarrow}
+
+\renewcommand{\bar}[1]{\overline{#1}}
+
+\def\getangle(#1)(#2)#3{
+    \begingroup
+        \pgftransformreset
+        \pgfmathanglebetweenpoints{\pgfpointanchor{#1}{center}}{\pgfpointanchor{#2}{center}}
+        \expandafter\xdef\csname angle#3\endcsname{\pgfmathresult}
+    \endgroup
+}
+
+\newcommand\Warning{
+    \makebox[1.4em][c]{
+    \makebox[-5.5pt][c]{\raisebox{.2em}{!}}
+    \makebox[0pt][c]{\color{red}\huge$\bigtriangleup$}}
+}
+%}}}
+
+%{{{----------------------------------Settings---------------------------------%
+
+\title{Maths 1A - AICC}
+
+\author{Arnò Fauconnet}
+
+\setlength{\parindent}{0pt} %disable initial indent on first paragraph of sections in the whole doc
+
+% the style of the boxes
+\newmdenv[
+        roundcorner=10pt,
+        middlelinecolor=red,
+        backgroundcolor=gray!15,
+        linewidth=2pt,
+        frametitlerule=true]{highlightBox}
+
+% increases the space between paragraphs
+\setlength{\parskip}{.3em}
+
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows}%for the transfer from geogebra to tikz
+\pgfplotsset{compat=1.15}
+
+
+% Geogebras wierd colors xD
+\definecolor{ffffff}{rgb}{1.,1.,1.}
+\definecolor{qqqqff}{rgb}{0.,0.,1.}
+\definecolor{qqffqq}{rgb}{0.,1.,0.}
+\definecolor{xfqqff}{rgb}{0.4980392156862745,0.,1.}
+\definecolor{ffqqtt}{rgb}{1.,0.,0.2}
+\definecolor{ududff}{rgb}{0.30196078431372547,0.30196078431372547,1.} 
+\definecolor{ffqqqq}{rgb}{1.,0.,0.} 
+\definecolor{xdxdff}{rgb}{0.49019607843137253,0.49019607843137253,1.}
+\definecolor{zzttqq}{rgb}{0.6,0.2,0.}
+\definecolor{uuuuuu}{rgb}{0.26666666666666666,0.26666666666666666,0.26666666666666666}
+\definecolor{wwccff}{rgb}{0.4,0.8,1.}
+\definecolor{qqttcc}{rgb}{0.,0.2,0.8}
+\definecolor{ffwwzz}{rgb}{1.,0.4,0.6}
+\definecolor{ttqqqq}{rgb}{0.2,0.,0.}
+
+\tikzstyle{every node}=[font=\large]
+
+\graphicspath{ {Maths_1A/figures/} }
+
+% header and footer settings
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,LO]{Arnaud Fauconnet}
+\fancyhead[CE,CO]{\textsc{Maths 1A}}
+\fancyhead[RE,RO]{MAN - Printemps 2019}
+\fancyfoot[CE,CO]{\leftmark}
+\fancyfoot[LE,RO]{\thepage}
+
+\renewcommand{\headrulewidth}{2pt}
+\renewcommand{\footrulewidth}{1pt}
+%}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----------------------------------------------------------------------------%
+%-------------------------------Text starts here-----------------------------%
+%----------------------------------------------------------------------------%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+\begin{titlepage}
+   \begin{center}
+       \vspace*{\fill}
+
+       {\Huge EPFL}\\ 
+%----------------------------------------------------------------------------%
+       \vfill
+       {\huge MAN}\\ [1em]
+       {\Large Mise à niveau}\\
+%----------------------------------------------------------------------------%
+        \vfill
+        \begin{tabularx}{\textwidth}{X}
+            \Xhline{3\arrayrulewidth}\\
+        \end{tabularx}\\ [2em]
+        {\Huge Maths 1A} \\ [1em]
+        \textsc{\huge Prepa-031(a)} \\ [2em]
+       \begin{tabularx}{\textwidth}{X}
+            \Xhline{3\arrayrulewidth}\\
+        \end{tabularx}
+%----------------------------------------------------------------------------%
+        \vspace{.7cm}
+        {\large
+        \begin{tabularx}{.9\textwidth}{Xr}
+            \textit{Student:} & \textit{Professor:}\\
+            Arnaud \textsc{Fauconnet} & Guido \textsc{Burmeister}
+        \end{tabularx}}
+%----------------------------------------------------------------------------%
+        \vfill
+        {\Large Printemps - 2019}
+
+%----------------------------------------------------------------------------%
+        \vfill
+        \includegraphics[width=7cm]{epfl-logo}
+
+       \vfill
+   \end{center} 
+\end{titlepage} 
+\setcounter{chapter}{1}
+\chapter{Équations et inéquations sur les réels}
+\label{sec:equations_et_inequations_sur_les_reels}
+
+\section{Identité algébrique}
+
+\paragraph{Propriétés:}
+\begin{itemize}
+    \item $(\mathbb{R}, +, \cdot)$ est un corps commutatif.
+    \item L'identité remarquable. Soient $a, b \in \mathbb{R}$
+        \begin{enumerate}
+            \item $(a \pm b)^{2} = a^{2} \pm 2ab + b^{2}$ 
+            \item $(a \pm b)^{3} = a^{3} \pm 3a^{2}b + 3ab^{2} \pm b^{3}$ 
+            \item $a^{2} - b^{2} = (a - b) \cdot (a + b)$ {\color{red} $\quad a+b:$ expression conjugué de $a-b$  }
+            \item $a^{3} - b^{3} = (a - b) \cdot (a^{2} + ab + b^{2})$ {\color{red} $\quad a^{2} + ab +b^{2}:$ expression conjugué de $a-b$}
+            \item $a ^{n} - b^{n} = (a - b) \cdot (a^{n-1} + a^{n-2}b + ... + ab^{n-2} + b^{n-1})$ 
+        \end{enumerate}
+\end{itemize}
+
+\paragraph{Exemples:} Amplifions par l'expression conjugué:
+
+\begin{enumerate}
+    \item $$\frac{1}{\sqrt{2}-1} {\color{red}\cdot \frac{\sqrt{2} + 1}{\sqrt{2}+1}}
+        = \frac{\sqrt{2}+1}{2 - 1} = \sqrt{2}+1$$
+    \item $$ \frac{1}{\sqrt[3]{x} + 1} {\color{red} \frac{(\sqrt[3]{x} - 
+        \sqrt[3]{x} + 1)}{(\sqrt[3]{x} - \sqrt[3]{x} + 1)}} =
+        \frac{(\sqrt[3]{x})^{2} + \sqrt[3]{x} + 1}{x + 1}, \quad (x \neq 1)$$
+\end{enumerate}
+
+\section{Ensemble solutions}
+\label{sec:ensemble_solutions}
+
+\paragraph{Exemples:}
+
+\begin{enumerate}
+    \item Résoudre en $x \in \mathbb{R}$:
+        $$4x + 5 = 0$$
+        L'unique solution est $x = - \frac{5}{4}$ \\
+        L'ensemble solution est $S = \{- \frac{5}{4}\}$ 
+    \item Résoudre en $x \in \mathbb{R}$:
+        $$2x \geq 3$$
+        L'ensemble solution $S = \left[\ \frac{3}{2}; + \infty\right[$ 
+\end{enumerate}
+
+\paragraph{Définition:}
+
+Soient $f, g$ deux fonctions définies sur $D_{\text{déf}} \in \mathbb{R}$.
+
+Résoudre l'équation:
+$$f(x) = g(x)$$
+ou l'inéquation $f(x) < g(x) (\text{strict})$ 
+
+ou encore $f(x) \leq g(x) (\text{large})$ 
+
+C'est chercher \textbf{l'ensemble aux valeurs} de $x$ vérifiant l'équation ou
+l'inéquation
+
+$$S = \{x \in \mathbb{D}_{ \text{déf}} \subset \mathbb{R} | \underbrace{x \text{ vérifie
+l'équation ou l'inéquation}}_{ \text{proposition } P(x)}\}$$
+
+\begin{itemize}
+    \item $\mathbb{R}:$ l'ensemble des valeurs à considerer (référentiel)
+    \item $\mathbb{D}_{\text{déf}}:$ l'ensemble des valeurs pour lesquelles l'expression
+        $P(x)$ a un sens.
+    \item L'équation ou l'inéquation est contrainte  ou propriété imposées
+\end{itemize}
+
+La résolution d'un problème passe par une succession de problème équivalents:
+les ensembles solutions sont identiques.
+
+\paragraph{Exemples:} Résoudre en $x \in \mathbb{R}$ 
+
+\begin{enumerate}
+    \item $P(x): \sqrt[3]{x} \leq 2$ 
+        \begin{itemize}
+            \item $\mathbb{D}_{\text{déf}} = \mathbb{R}$ 
+            \item Équivalence: $$\underbrace{\sqrt[3]{x} \leq 2}_{\text{proposition }
+                P(x), \text{ ensemble } A} \implies \underbrace{x \leq 2^{3} =
+                8}_{\text{ proposition } Q(x), \text{ ensemble B}}$$ 
+
+                Ainsi
+            $$S = A = B =\ ]- \infty; 8\ ]$$
+        \end{itemize}
+    \item $P(x) : x^{2} = 64$ 
+        \begin{itemize}
+            \item $\mathbb{D}_{\text{déf}} = \mathbb{R}$ 
+            \item Implication $$\underbrace{x^{2} = 64}_{P(x): A} \impliedby
+                \underbrace{x = 8}_{Q(x): B}$$
+        \end{itemize}
+        On a $B = \{8\} \subset \{-8; 8\} = A = S$ 
+    \item $P(x): \sqrt{x} = -4$ 
+        \begin{itemize}
+            \item $\mathbb{D}_{\text{déf}} = \mathbb{R}_{+}$ 
+            \item Implication: $$\underbrace{\sqrt{x} = - 4}_{P(x): A}
+                \implies \underbrace{x = (-4)^{2} = 16}_{Q(x): B}$$
+                Ainsi $S = A = \emptyset \subset \{16\} = B \quad \quad$ 
+                {\color{red} on a des solutions "parasites"}
+        \end{itemize}
+\end{enumerate}
+
+\Warning Savoir (et énoncé) ce qu'on cherche (on veut faire) 
+
+\subsection{Équations et inéquations linéaires}
+
+\paragraph{Définition:}
+
+Soient $a, b \in \mathbb{R}$ 
+$$a \cdot x = b$$
+est une équation linéaire en $x \in \mathbb{R}$ 
+
+Clairement, $\mathbb{D}_{\text{déf}} = \mathbb{R}$\\
+Pour résoudre une équation linéaire, \textbf{on cherche à isoler $x$:
+discussion selon $a$} 
+
+\begin{itemize}
+    \item $a \neq 0$ (on peut diviser par $a$):
+        $$ax=b \iff x = \frac{b}{a} \quad \text{ d'où } \quad S = \left\{\frac{b}{a}\right\}$$
+    \item $a = 0$ (on ne peut pas diviser pas diviser par $a$ !)
+
+        $$ax=b \iff 0x=b$$
+        
+        \begin{itemize}
+            \item Si $b = 0: \quad 0x = 0.\quad$ Tout $x \in \mathbb{R}$ est
+                solution $\quad S = \mathbb{R}$
+            \item Si $b \neq 0: \quad 0x \neq 0. \quad$ Aucun $x$ est solution
+                $S = \emptyset$
+        \end{itemize}
+\end{itemize}
+
+\paragraph{Exemple:}
+
+Résoudre en $x \in \mathbb{R}$ l'équation $$m^{2} \cdot x - m - 4x = 2$$ en
+fonction de paramètre réel $m$ (pour chaque $m$ l'équation est différente)
+
+\paragraph{Remarque:}
+
+Équation du $1^{\text{er}}$ degré, en $x$, on cherche à \textbf{isoler $x$.} 
+$$\underbrace{(m^{2} - 4)}_a x = \underbrace{m + 2}_b$$
+
+Discussion du coefficient de $x$
+
+\begin{itemize}
+    \item $m^{2} - 4 \neq 0, \quad m \notin \{-2; 2\}$
+        \[
+            \begin{split}
+            \implies x &= \frac{\cancel{m+2}}{(\cancel{m+2})\cdot(m-2)} = \frac{1}{m-2}\\
+            \\
+            S &= \left\{\frac{1}{m-2}\right\}
+            \end{split}
+        \]
+
+    \item $m^{2} - 4 = 0, \quad m \in \{-2; 2\}$ 
+
+        \begin{itemize}
+            \item si $m = -2$
+                \[
+                    \begin{split}
+                        (m^{2} - 4)x &= m + 2  \iff 0x = 0\\
+                        S &= \mathbb{R}
+                    \end{split}
+                \]
+            \item si $m = 2$
+                \[
+                    \begin{split}
+                        (m^{2} - 4)x &= m + 2  \iff 0x = 4\\
+                        S &= \emptyset
+                    \end{split}
+                \]
+        \end{itemize}
+\end{itemize}
+
+\paragraph{Résumé:}
+
+\begin{itemize}
+    \item si $m \notin \{-2; 2\}, \quad S = \left\{\frac{1}{m-2}\right\}$
+    \item si $m = -2  , \quad S = \mathbb{R}$
+    \item si $m = 2 , \quad S = \emptyset$
+\end{itemize}
+
+\paragraph{Définition:}
+
+Soient $a, b \in \mathbb{R}$
+$$ax > b$$
+est une inéquation \textbf{linéaire} en $x \in \mathbb{R}$: on cherche à
+isoler $x$.
+
+D'où une discussion de $a$.
+
+\begin{itemize}
+    \item $a > 0$:
+        $$ax > b \iff x > \frac{b}{a}$$ $$S = \left] \frac{b}{a};
+        + \infty \right[$$
+    \item $a = 0$:
+        $$ax > b \iff 0x > b$$
+        \begin{itemize}
+            \item si $b < 0$, tout $x$ est solution de $S$.
+                $$S = \mathbb{R}$$
+            \item si $b \geq 0$, aucun $x$ est solution de $S$.
+                $$S = \emptyset$$
+        \end{itemize}
+    \item $a < 0$:
+        $$ax > b \iff x < \frac{b}{a}$$ $$S = \left] - \infty;
+         \frac{b}{a} \right[$$
+\end{itemize}
+
+\paragraph{Remarque:}
+
+Résolution similaire pour $ax \geq b, ax < b \text{ et } ax \leq b$
+
+\paragraph{Exemple:}
+
+Résoudre en $x \in \mathbb{R}: m^{2}x - m - 4m \leq 2$ en fonction du
+paramètre $m$.
+
+\paragraph{Remarque:}
+
+Inéquation linéaire, on cherche à isoler $x$ $$(m^{2} - 4)x \leq m + 2$$
+
+Discussion du coefficient de $x$ 
+
+\begin{itemize}
+    \item Paramètre positif: $$m^{2} - 4 = (m-2)(m+2) > 0 \implies m \in \ ]- \infty; -2\ ]
+        \cup [\ 2; + \infty[$$
+            $$(m^{2} - 4) x \leq m + 2 \iff x \leq \frac{m + 2}{(m-2)(m+2)} =
+            \frac{1}{m-2}$$
+        $$S = \left] - \infty ; \frac{1}{m-2}\ \right]$$
+
+    \item Paramètre nul: $$m^{2} - 4 = 0 \iff m \in \{-2; 2\}$$
+        \begin{itemize}
+            \item $m = -2$
+                $$(m^{2} - 4) x \leq m + 2 \iff 0x \leq 0$$
+                $$S = \mathbb{R}$$
+
+            \item $m = 2$
+                $$(m^{2} - 2) x \leq m + 2 \iff 0x \leq 4 $$
+                $$S = \mathbb{R}$$
+        \end{itemize}
+
+    \item Paramètre négatif: $$m^{2} - 4 < 0 \iff m \in\ ] -2; 2\ [$$
+            $$(m^{2} - 4) x \leq  m + 2 \iff x \geq \frac{1}{m+2}$$
+            $$S = \left[\ \frac{1}{m-2}; + \infty \right[$$
+\end{itemize}
+
+
+\paragraph{Résumé}
+
+\begin{itemize}
+    \item si $ m  \in\ ]-\infty; -2\ [\ \cup\ ]2; + \infty[, \quad S =
+            \left]-\infty; \frac{1}{m-2}\ \right]$
+    \item si $ m \in \{-2; 2\}, \quad S = \mathbb{R}$
+    \item si $ m  \in\ ]-2; 2\ [, \quad S = \left[\frac{1}{m-2}; + \infty\right[$
+\end{itemize}
+
+\section{Équations et inéquations rationelles}
+\label{sec:equations_et_inequations_rationelles}
+
+\paragraph{Définition:}
+
+Une fonction rationnelle en $x \in \mathbb{R}$ est un quotient de fonction
+polynomiale. Pour résoudre une équation $f(x) = g(x)$ ou inéquations $f(x) <
+g(x)$ sur la fonction rationnelle.
+
+\begin{itemize}
+    \item On différencie le domaine de définition $\mathbb{D}_{\text{déf}}$.
+    \item On passe \textbf{toutes} les expression du même côté de l'égalité (ou
+        inégalités) et on étudie le signe en factorisant.
+\end{itemize}
+
+
+\paragraph{Exemple:}
+
+Résoudre en $x$ l'inéquation  $x > \frac{4}{x}$
+
+\begin{itemize}
+    \item $\mathbb{D}_{\text{déf}} = \mathbb{R}$
+    \item Inéquation rationnelle: on porte toute du même côté
+        \[
+            \begin{split}
+                x - \frac{4}{x} > 0 &\iff \frac{x^{2} - 4}{x} > 0\\
+                &\iff \frac{(x + 2)\cdot(x-2)}{x} > 0
+            \end{split}
+        \]
+
+        \pagebreak
+
+    \item tableau des signes (remarque: le valeurs remarquables sont $-2, 0, 2$)
+
+\end{itemize}
+
+\begin{center}
+    
+    \begin{tabular}{c|ccccccc}
+        $x$ &  & $-2$ &  & $0$ &  & $2$  & \\
+        &  & {\scriptsize$\downarrow$} &  & {\scriptsize$\downarrow$} &  &{\scriptsize$\downarrow$}  & \\
+        \hline
+        $x + 2$ & $-$ & $0$  & $+$  & $+$  & $+$  & $+$  & $+$ \\
+        $x - 2$ & $-$  & $-$  & $-$  & $-$  & $-$  & $0$  & $+$ \\
+        $x$ & $-$  & $-$  & $-$  & $0$  & $+$  & $+$  & $+$ \\
+        \hline
+        $\frac{(x+2)\cdot(x-2)}{x}$ & $-$  & $0$  & $+$  & \fcolorbox{gray}{gray}{\makebox[.4em][c]{\makebox[0pt][c]{\raisebox{-.1em}{\color{gray}0}}} }  & $-$  & $0$  & $+$ \\
+    \end{tabular}
+\end{center}
+
+$$S =\ ]-2; 0[\ \cup\ ] 2; +\infty[$$
+
+
+
+ missing stuff
+
+
+\section{sectoin missing}
+\label{sec:sectoin_missing}
+ missing stuff
+
+
+\section{sectoin missing}
+\label{sec:sectoin_missing}
+
+ missing stuff
+
+
+\section{Valeur absolue}
+\label{sec:valeur_absolue}
+
+\paragraph{Définition:}
+
+Soit $x \in \mathbb{R}$. La valeur absolue de $x$, not\'ee $|x|$ est r\'eel
+positif ou null
+$$ |x| = \left\{
+    \begin{array}{ll}
+    x & \text{ si } x \geq 0\\
+    -x & \text{ si } x < 0\\
+    \end{array}
+\right. $$
+
+\paragraph{Exemple:}
+
+$$|-3| = - (-3) = 3 \quad \quad \quad |\sqrt{2}| = \sqrt{2}$$
+
+\paragraph{Propriétés:}
+
+Soient $x, y \in \mathbb{R}$. Alors 
+\begin{enumerate}
+    \item $|x| \geq 0$
+    \item $|x| = 0 \iff x = 0$
+    \item $|x^{2}| = x^{2}$
+    \item $|-x| = |x|$
+    \item $x = \text{sgn}(x) \cdot |x| \text{ et } |x| = \text{sgn} (x) \cdot x$
+    \item $-|x| \leq x \leq |x|$
+    \item $|x + y| \leq |x| + |y| \text{(inégalité triangulaire)}$
+    \item $|x\cdot y| = |x| \cdot |y|$
+\end{enumerate}
+
+
+\subsection{Equation \`a valeur absolue}
+
+\paragraph{Remarque:}
+
+L'\'equation $|x| = a, \quad a \in \mathbb{R}$ ne peut clairement pas avoir de
+solutions en $x \in \mathbb{R}$ si $a < 0$
+
+\paragraph{Théorème:}
+
+On a l'\'equivalence $$|x| = a \iff a \geq 0 \text{ et }  \left\{
+    \begin{array}{l}
+    x = a\\
+    x = -a\\
+    \end{array}
+\right.$$
+
+
+En effet, 
+
+\begin{center}
+    \begin{minipage}{.49\linewidth}
+        \resizebox{\textwidth}{!}{
+            \begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=1.0cm,y=1.0cm]
+            \begin{axis}[
+            x=1.0cm,y=1.0cm,
+            axis lines=middle,
+            xmin=-6.0,
+            xmax=6.0,
+            ymin=-2.5,
+            ymax=6.0,
+            xtick={-5.0,...,5.0},
+            ytick={-2.0,-1.0,...,5.0},
+            xticklabels={},
+            yticklabels={},
+            xlabel={$x$},
+            ylabel={$y$},
+            ]
+            \clip(-6.,-2.5) rectangle (6.,6.);
+            \draw[line width=0.4pt,color=qqqqff,smooth,samples=100,domain=-6.0:6.0] plot(\x,{abs((\x))});
+            \draw [line width=0.4pt,color=ffqqqq,domain=-6.:6.] plot(\x,{(--4.-0.*\x)/1.});
+            \draw [line width=0.4pt,dash pattern=on 3pt off 3pt,color=ffqqqq] (-4.,0.) node [anchor = north]{$-a$}-- (-4.,4.);
+            \draw [line width=0.4pt,dash pattern=on 3pt off 3pt,color=ffqqqq] (4.,0.) node [anchor = north]{$a$}-- (4.,4.);
+            \begin{scriptsize}
+                \draw[color=qqqqff] (5.3,6) node [anchor =north east]{$y = |x|$};
+                \draw[color=ffqqqq] (6,4) node [anchor =south east]{$y = a$};
+                \draw[color=ffqqqq] (-3,-1) node {$a > 0$};
+            \end{scriptsize}
+            \end{axis}
+            \end{tikzpicture}
+        }
+        $$S = \{-a; a\}$$
+    \end{minipage}
+    \begin{minipage}{.49\linewidth}
+        \resizebox{\textwidth}{!}{
+            \begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=1.0cm,y=1.0cm]
+            \begin{axis}[
+            x=1.0cm,y=1.0cm,
+            axis lines=middle,
+            xmin=-6.0,
+            xmax=6.0,
+            ymin=-2.5,
+            ymax=6.0,
+            xtick={-5.0,...,5.0},
+            ytick={-2.0,-1.0,0.0,...,5.0},
+            xticklabels={},
+            yticklabels={},
+            xlabel={$x$},
+            ylabel={$y$},
+            ]
+            \clip(-6.,-2.5) rectangle (6.,6.);
+            \draw[line width=0.4pt,color=qqqqff,smooth,samples=100,domain=-6.0:6.0] plot(\x,{abs((\x))});
+            \draw [line width=0.4pt,color=ffqqqq,domain=-6.:6.] plot(\x,{(-1.5-0.*\x)/1.});
+            \begin{scriptsize}
+                \draw[color=qqqqff] (5.3,6) node [anchor =north east]{$y = |x|$};
+                \draw[color=ffqqqq] (6,-1.5) node [anchor =south east]{$y = a$};
+                \draw[color=ffqqqq] (-3,-1) node {$a < 0$};
+            \end{scriptsize}
+            \end{axis}
+            \end{tikzpicture}
+        }
+        $$S = \emptyset$$
+    \end{minipage}
+\end{center}
+
+\paragraph{Remarque:}
+
+(g\'en\'eralisation)
+
+Soient $f$ et $g$ deux fonctions r\'elles. On a l'\'equivalence 
+
+\begin{highlightBox}
+    $$|f(x)| = g(x) \iff g(x) \geq 0 \text{ et }  \left\{
+        \begin{array}{l}
+        f(x)  = g(x)\\
+        f(x)  = -g(x)\\
+        \end{array}
+    \right.$$
+\end{highlightBox}
+
+\paragraph{Remarque:}
+
+On ne discute pas le signe de $f(x)$, mais seulement celui de $g(x)$
+(condition de positivit\'e). On travaille donc sur le r\'ef\'erentiel
+restreint $\mathbb{D}_{\text{d\'ef}} \cap \mathbb{D}_{\text{positif}}$
+
+\paragraph{Exemple:}
+
+R\'esoudre en $x \in \mathbb{R}$
+
+$$| x^{2} + 2x - 5 | = x + 1$$
+
+\begin{itemize}
+    \item domaine de d\'efinition: $\mathbb{D}_{\text{d\'ef}} = \mathbb{R}$
+    \item \'equivalence:
+        $$| x^{2} + 2x - 5| = x + 1 \iff x + 1 \geq 0 \text{ et } \left\{
+            \begin{array}{lc}
+            x^{2} + 2 x - 5 = x+1 & (1)\\
+            x^{2} + 2 x - 5 = -(x+1) & (2)\\
+            \end{array}
+        \right.$$
+
+    \item condition de positivit\'e : $x + 1 \geq 0$
+
+        D'o\`u $\mathbb{D}_{\text{pos}} = [\ -1; + \infty\ ]$
+
+    \item \'equatoin $(1)$
+        \[
+            \begin{split}
+               (1):& x^{2} + x - 6 = 0     \\
+               &(x+3) \cdot (x-2) = 0
+            \end{split}
+        \]
+        d'o\`u $S_{1} = \{-3, 2\}$
+
+        \paragraph{Remarque:}
+        
+        $-3$ est \`a exclure: $-3 \notin \mathbb{D}_{\text{pos}}$
+
+    \item l'\'equation $(2)$
+        \[
+            \begin{split}
+               (2):& x^{2} + 3x - 4 = 0     \\
+               &(x+4) \cdot (x-1) = 0
+            \end{split}
+        \]
+        d'o\`u $S_{1} = \{-4, 1\}$
+
+    \item Solution: $$S = \mathbb{D}_{\text{d\'ef}} \cap \mathbb{D}_{\text{pos}} \cap (S_{1}
+        \cup S_{2}) = \{1, 2\}$$
+
+\end{itemize}
+
+\subsection{In\'equation \`a valeur absolue}
+\label{sub:in'equation_`a_valeur_absolue}
+
+\paragraph{Remarque:}
+
+L'in\'equation $|x| \leq a, \quad a \in \mathbb{R}$, ne peut pas avoir de
+solution si $a < 0$. On n'a pourtant besoin de discuter le signe de $a$!
+
+\paragraph{Théorème:}
+
+Soit $a \in \mathbb{R}$. On a l'\'equivalence
+
+$$|x| \leq a \iff \left\{
+    \begin{array}{l}
+    x \leq a\\
+    \text{et } \\
+    x \geq -a\\
+    \end{array}
+\right.$$
+
+En effet,
+
+\begin{center}
+    \begin{minipage}{.49\linewidth}
+        \resizebox{\textwidth}{!}{
+            \begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=1.0cm,y=1.0cm]
+            \begin{axis}[
+            x=1.0cm,y=1.0cm,
+            axis lines=middle,
+            xmin=-6.0,
+            xmax=6.0,
+            ymin=-2.5,
+            ymax=6.0,
+            xtick={-5.0,...,5.0},
+            ytick={-2.0,-1.0,...,5.0},
+            xticklabels={},
+            yticklabels={},
+            xlabel={$x$},
+            ylabel={$y$},
+        ]
+            \clip(-6.,-2.5) rectangle (6.,6.);
+            \draw[line width=4.pt] (-7.255053904054706,10.395884435575802) -- (-3.0274049107279426,10.395884435575802);
+            \draw [line width=0.4pt,color=ffqqqq,domain=-6.:6.] plot(\x,{(--4.-0.*\x)/1.});
+            \draw[line width=0.4pt,color=qqqqff,smooth,samples=100,domain=-6.0:6.0] plot(\x,{abs((\x))});
+            \draw [line width=0.4pt,dash pattern=on 2pt off 2pt,color=ffqqqq] (4.,0.)node [anchor = north] {$a$}-- (4.,4.);
+            \draw [line width=0.4pt,dash pattern=on 2pt off 2pt,color=ffqqqq] (-4.,0.)node [anchor = north] {$-a$}-- (-4.,4.);
+            \draw [line width=0.4pt,color=ffqqqq] (-4.,-0.5)-- (4.,-0.5);
+            \draw [line width=0.4pt,color=qqffqq,domain=-6.0:4.0] plot(\x,{(--3.984669879181435-0.*\x)/-4.});
+            \draw [line width=0.4pt,color=xfqqff,domain=-4.0:6.0] plot(\x,{(-6.014250288791247-0.*\x)/4.});
+            \begin{scriptsize}
+            \draw[color=ffqqqq] (4, -0.5) node [anchor=west] {$S$};
+            \draw[color=qqffqq] (4, -1) node [anchor=west]{$x \leq a$};
+            \draw[color=xfqqff] (-4, -1.5) node [anchor=east]{$x \geq -a$};
+            \draw[color=qqqqff] (5.3,6) node [anchor =north east]{$y = |x|$};
+            \draw[color=ffqqqq] (6,4) node [anchor =south east]{$y = a$};
+            \draw[color=ffqqqq] (-3,5) node {$a > 0$};
+            \end{scriptsize}
+            \end{axis}
+            \end{tikzpicture}
+        }
+        $$S = [\ -a, a\ ] = {\color{qqffqq}] - \infty; a\ ]} \cap {\color{xfqqff}[\ -a; + \infty[}$$
+    \end{minipage}
+    \begin{minipage}{.49\linewidth}
+        \resizebox{\textwidth}{!}{
+            \begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=1.0cm,y=1.0cm]
+            \begin{axis}[
+            x=1.0cm,y=1.0cm,
+            axis lines=middle,
+            xmin=-6.0,
+            xmax=6.0,
+            ymin=-2.5,
+            ymax=6.0,
+            xtick={-5.0,...,5.0},
+            ytick={-2.0,-1.0,0.0,...,5.0},
+            xticklabels={},
+            yticklabels={},
+            xlabel={$x$},
+            ylabel={$y$},
+            ]
+            \clip(-6.,-2.5) rectangle (6.,6.);
+            \draw[line width=0.4pt,color=qqqqff,smooth,samples=100,domain=-6.0:6.0] plot(\x,{abs((\x))});
+            \draw [line width=0.4pt,dash pattern=on 2pt off 2pt,color=ffqqqq] (1.,0.) node [anchor= south] {$-a$}-- (1.,-1.);
+            \draw [line width=0.4pt,dash pattern=on 2pt off 2pt,color=ffqqqq] (-1.,0.) node [anchor= south] {$a$}-- (-1.,-1.);
+            \draw [line width=0.4pt,color=ffqqqq,domain=-6.:6.] plot(\x,{(-1-0.*\x)/1.});
+            \draw [line width=0.4pt,color=qqffqq,domain=-6.0:-0.996892396320315] plot(\x,{(--5.3142074179149255-0.*\x)/-3.553949038688488});
+            \draw [line width=0.4pt,color=xfqqff,domain=1.0028089788665404:6.0] plot(\x,{(-2.703447941698279-0.*\x)/1.807967860108991});
+            \begin{scriptsize}
+                \draw[color=qqqqff] (5.3,6) node [anchor =north east]{$y = |x|$};
+                \draw[color=ffqqqq] (6,-1) node [anchor =south east]{$y = a$};
+                \draw[color=ffqqqq] (-3,5) node {$a < 0$};
+                \draw[color=qqffqq] (-1, -1.5) node [anchor=north east]{$x \leq a$};
+                \draw[color=xfqqff] (1, -1.5) node [anchor=north west]{$x \geq -a$};
+            \end{scriptsize}
+            \end{axis}
+            \end{tikzpicture}
+        }
+        $$S =  \emptyset = {\color{qqffqq}]- \infty; a\ ]} \cap {\color{xfqqff}[\ -a; + \infty[}$$
+    \end{minipage}
+\end{center}
+
+
+
+\paragraph{Théorème:}
+
+Soient $f$ et $g$ deux fonctions r\'eelles. On a l'\'equivalence 
+
+\begin{highlightBox}
+    $$|f(x)| \leq g(x)  \iff \left\{
+        \begin{array}{l}
+        f(x) \leq g(x)\\
+        \text{et } \\
+        f(x) \geq -g(x)\\
+        \end{array}
+    \right.$$
+\end{highlightBox}
+
+\paragraph{Remarques:}
+
+\begin{enumerate}
+    \item On ne discutera pas le signe de $f(x)$, ni celui de $g(x)$ (le cas
+        trivial $g(x)< 0$ est rejet\'e lors de l'intersection)
+    \item Idem avec l'in\'egualit\'e stricte.
+\end{enumerate}
+
+
+\paragraph{Remarque:}
+
+L'in\'equation $|x| \leq a, \quad a \in \mathbb{R}$ admet clairement tout $x
+\in \mathbb{R}$ comme solution si $a < 0$ (une valeur absolue est toujours
+grand qu'un nombre n\'egatif).  On ne discutera pourtant pas le signe de $a$!
+ 
+$$|x| \leq a, \quad a < 0 \text{ trivial } : \quad S = \emptyset$$
+$$|x| \geq a, \quad a < 0 \text{ trivial } : \quad S = \mathbb{R}$$
+
+\paragraph{Théorème:}
+
+Soit $a \in \mathbb{R}$. On a l'\'equivalence
+
+$$|x| \geq a \iff \left\{
+    \begin{array}{l}
+    x \geq a\\
+    \text{ou } \\
+    x \leq -a\\
+    \end{array}
+\right.$$
+
+En effet, 
+
+\begin{center}
+    \begin{minipage}{.49\linewidth}
+        \resizebox{\textwidth}{!}{
+            \begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=1.0cm,y=1.0cm]
+            \begin{axis}[
+            x=1.0cm,y=1.0cm,
+            axis lines=middle,
+            xmin=-6.0,
+            xmax=6.0,
+            ymin=-2.5,
+            ymax=6.0,
+            xtick={-5.0,...,5.0},
+            ytick={-2.0,-1.0,...,5.0},
+            xticklabels={},
+            yticklabels={},
+            xlabel={$x$},
+            ylabel={$y$},
+        ]
+            \clip(-6.,-2.5) rectangle (6.,6.);
+            \draw[line width=4.pt] (-7.255053904054706,10.395884435575802) -- (-3.0274049107279426,10.395884435575802);
+            \draw [line width=0.4pt,color=ffqqqq,domain=-6.:6.] plot(\x,{(--4.-0.*\x)/1.});
+            \draw[line width=0.4pt,color=qqqqff,smooth,samples=100,domain=-6.0:6.0] plot(\x,{abs((\x))});
+            \draw [line width=0.4pt,dash pattern=on 2pt off 2pt,color=ffqqqq] (4.,0.)node [anchor = north] {$a$}-- (4.,4.);
+            \draw [line width=0.4pt,dash pattern=on 2pt off 2pt,color=ffqqqq] (-4.,0.)node [anchor = north] {$-a$}-- (-4.,4.);
+            \draw [line width=0.4pt,color=qqffqq,domain=-6.0:-4.0] plot(\x,{(--3.984669879181435-0.*\x)/-4.});
+            \draw [line width=0.4pt,color=xfqqff,domain=4.0:6.0] plot(\x,{(-6.014250288791247-0.*\x)/4.});
+            \draw [line width=0.4pt,color=ffqqqq,domain=-6.0:-4.0] plot(\x,{(0*\x-.5)});
+            \draw [line width=0.4pt,color=ffqqqq,domain=4.0:6.0] plot(\x,{(0*\x-.5)});
+            \begin{scriptsize}
+            \draw[color=ffqqqq] (4, -0.5) node [anchor=east] {$S$};
+            \draw[color=qqffqq] (-4, -1) node [anchor=west]{$x \leq -a$};
+            \draw[color=xfqqff] (4, -1.5) node [anchor=east]{$x \geq a$};
+            \draw[color=qqqqff] (5.3,6) node [anchor =north east]{$y = |x|$};
+            \draw[color=ffqqqq] (6,4) node [anchor =south east]{$y = a$};
+            \draw[color=ffqqqq] (-3,5) node {$a > 0$};
+            \end{scriptsize}
+            \end{axis}
+            \end{tikzpicture}
+        }
+        $$S = {\color{green}]-\infty; -a\ ]} \cup {\color{xfqqff}[\ a; + \infty\ [}$$
+    \end{minipage}
+    \begin{minipage}{.49\linewidth}
+        \resizebox{\textwidth}{!}{
+            \begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=1.0cm,y=1.0cm]
+            \begin{axis}[
+            x=1.0cm,y=1.0cm,
+            axis lines=middle,
+            xmin=-6.0,
+            xmax=6.0,
+            ymin=-2.5,
+            ymax=6.0,
+            xtick={-5.0,...,5.0},
+            ytick={-2.0,-1.5,...,5.0},
+            xticklabels={},
+            yticklabels={},
+            xlabel={$x$},
+            ylabel={$y$},
+            ]
+            \clip(-6.,-2.5) rectangle (6.,6.);
+            \draw[line width=0.4pt,color=qqqqff,smooth,samples=100,domain=-6.0:6.0] plot(\x,{abs((\x))});
+            \draw [line width=0.4pt,dash pattern=on 2pt off 2pt,color=ffqqqq] (1.,0.) node [anchor= south] {$-a$}-- (1.,-.5);
+            \draw [line width=0.4pt,dash pattern=on 2pt off 2pt,color=ffqqqq] (-1.,0.) node [anchor= south] {$a$}-- (-1.,-.5);
+            \draw [line width=0.4pt,color=ffqqqq,domain=-6.:6.] plot(\x,{(-.5-0.*\x)/1.});
+            \draw [line width=0.4pt,color=qqffqq,domain=-1:6] plot(\x,{(-1-0.*\x)});
+            \draw [line width=0.4pt,color=xfqqff,domain=1:-6] plot(\x,{(-2.703447941698279-0.*\x)/1.807967860108991});
+            \begin{scriptsize}
+                \draw[color=qqqqff] (5.3,6) node [anchor =north east]{$y = |x|$};
+                \draw[color=ffqqqq] (6,-1) node [anchor =south east]{$y = a$};
+                \draw[color=ffqqqq] (-3,5) node {$a < 0$};
+                \draw[color=qqffqq] (-1, -1) node [anchor=east]{$x \geq a$};
+                \draw[color=xfqqff] (1, -1.5) node [anchor=west]{$x \leq -a$};
+            \end{scriptsize}
+            \end{axis}
+            \end{tikzpicture}
+        }
+        $$S = \mathbb{R} = {\color{xfqqff}]-\infty; -a\ ]} \cup {\color{green}[\ a; + \infty\ [}$$
+    \end{minipage}
+\end{center}
+
+
+\paragraph{Théorème:}
+
+Soient $f$ et $g$ deux fonctions r\'eelles. On a l'\'equilavence 
+
+\begin{highlightBox}
+    $$|f(x)| \geq g(x) \iff \left\{
+        \begin{array}{l}
+        f(x) \geq g(x)\\
+        \text{ou } \\
+        f(x) \leq -g(x)\\
+        \end{array}
+    \right.$$
+\end{highlightBox}
+
+\paragraph{Remarques:}
+
+\begin{enumerate}
+    \item On ne discutera ni le signe de $f(x)$, ni celui de $g(x)$. Le cas
+        trivial $g(x) < 0$ est trait\'e par la r\'eunion.
+    \item idem pour l'in\'egalit\'e stricte. 
+\end{enumerate}
+
+\paragraph{Exemple:}
+
+R\'esoudre en $x \in \mathbb{R}$
+
+$$|x| + \frac{x-1}{2} < 0$$
+
+\begin{itemize}
+    \item domaine de d\'efinition: $\mathbb{D}_{\text{d\'ef}} = \mathbb{R}$
+
+    \item \'equivalence 
+
+        $$|x| < - \frac{x-1}{2} \iff \left\{
+            \begin{array}{lc}
+            x < - \frac{x-1}{2} & (1) \\
+            \text{et } \\
+            x > \frac{x-1}{2} & (2) \\
+            \end{array}
+        \right.$$
+
+    \item in\'equation $(1)$. On isole $x$ 
+        $$3 x < 1 \text{ d'o\'u } S_{1} = \left]-\infty; \frac{1}{3} \right[$$
+    \item in\'equation $(1)$. On isole $x$ 
+        $$ x > -1 \text{ d'o\'u } S_{2} = ]-1; + \infty[$$
+
+    \item Solution:
+        $$S = \mathbb{D}_{\text{d\'ef}} \cap S_{1} \cap S_{2} = \left]-1, \frac{1}{3}\right[$$
+\end{itemize}
+
+\paragraph{Exemple:}
+
+R\'esoudre en $x \in \mathbb{R}$
+$$|x - 2| > \frac{2x-4}{x}$$
+
+\begin{itemize}
+    \item $\mathbb{D}_{\text{d\'ef}} = \mathbb{R}^{*}$
+
+    \item $$|x -2| < \frac{2x-4}{x} \iff \left\{
+        \begin{array}{lc}
+        x - 2 > \frac{2x - 4}{x} & (1)\\
+        \text{ou } \\
+        x - 2 < -\frac{2x - 4}{x} & (2)\\
+        \end{array}
+    \right.$$
+
+    \item in\'equation $(1)$ 
+
+        \[
+            \begin{split}
+               x - 2 - \frac{2x-4}{x}&> 0 \\    
+               (x-2)\cdot \left(1 - \frac{2}{x}\right) &> 0\\
+               \frac{(x-2)^{2}}{x} &>0
+            \end{split}
+        \]
+        d'o\`u $$S_{1} = \mathbb{R}^{*}_{+} \backslash \{2\} = ]0; 2[\ \cup \
+        ] 2 ; +\infty[$$
+
+    \item in\'equation $(2)$ 
+
+        \[
+            \begin{split}
+               x - 2 + \frac{2x-4}{x}&< 0 \\    
+               (x-2)\cdot \left(1 + \frac{2}{x}\right) &< 0\\
+               \frac{(x-2)\cdot (x+2)}{x} &<0
+            \end{split}
+        \]
+        d'o\`u $$S_{1} = \mathbb{R}^{*}_{+} \backslash \{2\} = ]0; 2[\ \cup \
+        ] 2 ; +\infty[$$
+
+
+        \begin{center}
+            \begin{tabular}{c|ccccccc}
+                $x$ &  & $-2$ &  & $0$ &  & $2$  & \\
+                \hline
+                $x - 2$ & $-$  & $-$  & $-$  & $-$  & $-$  & $0$  & $+$ \\
+                $x + 2$ & $-$ & $0$  & $+$  & $+$  & $+$  & $+$  & $+$ \\
+                $x$ & $-$  & $-$  & $-$  & $0$  & $+$  & $+$  & $+$ \\
+                \hline
+                $\frac{(x+2)\cdot(x-2)}{x}$ & $-$  & $0$  & $+$  & \fcolorbox{gray}{gray}{\makebox[.4em][c]{\makebox[0pt][c]{\raisebox{-.1em}{\color{gray}0}}} }  & $-$  & $0$  & $+$ \\
+            \end{tabular}
+        \end{center}
+        d'o\`u $$S_{2} = ] -\infty; -2[\ \cup \ ] 0; 2[$$
+
+    \item Solution:
+        $$S = \mathbb{D}_{\text{d\'ef}} \cap (S_{1} \cup S_{2})$$
+    $$s = ]-\infty; -2[\ \cup\ ]\ 0; 2\ [\ \cup\ ]2; +\infty[$$
+
+\end{itemize}
+
+\section{Racines}
+\label{sec:racines}
+
+\subsection{Racines positives (ou arithmétique)}
+\label{sub:racines_positives_ou_arithmetique_}
+
+Soit $n \in \mathbb{N}^{*}$
+
+Graphe de $x^{n}$
+
+% fig 1
+
+\paragraph{Définition:}
+
+Soient $a \in \mathbb{R}_{+}$ et $n \in \mathbb{N}^{*}$
+
+Le \textbf{réel positif} $x$ vérifiant $x^{n} = a$ est appelé $n^{\text{e}}$
+racine positive de $a$.
+
+\paragraph{Exemple:}
+
+$\sqrt{-4}$ $n$ est pas définie
+
+$\sqrt[3]{-27} = 3$: racine cubique 
+
+$-2$ n'est pas une racine de $4$.
+
+\paragraph{Propriétés:}
+
+Soient $a, b \in \mathbb{R}_{+}, \quad m,n \in \mathbb{N}^{*}$
+
+\begin{enumerate}
+    \item $(\sqrt[n]{a})^{n}  = a$
+    \item $\sqrt[n]{a^{m}}  = (\sqrt[n]{a})^{m}$
+    \item $\sqrt[n]{a \cdot b} = \sqrt[n]{a} \cdot \sqrt[n]{b}$
+    \item $\sqrt[m]{\sqrt[n]{a}} = \sqrt[n\cdot m]{a}$
+\end{enumerate}
+
+\paragraph{Remarque:}
+
+Ce sont les même règles que celle puissances en posant 
+
+
+
+$$\sqrt[q]{a^{p}} = a ^{\frac{p}{q}}, \quad a \in \mathbb{R}^{*}_{-}, p \in \mathbb{Z},
+q \in \mathbb{N}^{*}$$
+
+\paragraph{Exemple:}
+
+$$7^{-\frac{2}{3}} = \frac{1}{7^{\frac{2}{3}}} = \frac{1}{\sqrt[3]{7^{2}}}$$
+$$\sqrt{3x^{2}} = \sqrt{3} \cdot \sqrt{x^{2}} = \sqrt{3} \cdot |x|$$
+
+\subsection{Racines réelles (ou zéros)}
+\label{sub:racines_reelles_ou_zeros_}
+
+\paragraph{Définition:}
+
+Soient $a \in \mathbb{R}$ et $n \in \mathbb{N}^{*}$. Un nombre $x \in \mathbb{R}$
+vérifiant $x^{n} = a$ est une $n^{\text{e}}$ racine \textbf{réelle} de $a$.
+
+\paragraph{Exemple:}
+
+\begin{itemize}
+    \item $2$ et $-2$ sont les solutions à $$x^{2} =4$$ 
+        Ce sont les $2$ racines carrées réelles de $4$.
+    \item $-3$ est racine cubique réelle de $-27$. En effet $$(-3)^{3} = -27$$
+\end{itemize}
+
+Discussion graphique de l'équation en $x$ $$x^{n} = a$$
+
+\begin{itemize}
+    \item  $n$ pair
+        \begin{center}
+            \begin{minipage}{.5\linewidth}
+                \resizebox{\textwidth}{!}{
+%fig 2
+                }
+            \end{minipage}
+            \begin{minipage}{.49\linewidth}
+                \setlength{\parskip}{.3em}
+                \paragraph{Remarque:}
+                Axe de symétrie en $x = 0$
+                \begin{itemize}
+                    \item si $a > 0$: $2$ racines distinctes:
+                        $$S = \{-\sqrt[n]{a}, +\sqrt[n]{a}\}$$
+                    \item si $a = 0$: racine double:
+                        $$S = \{0\}$$
+                    \item si $a < 0$: pas de racines
+                        $$S = \emptyset$$
+                \end{itemize}
+            \end{minipage}
+        \end{center}
+    \item $n$ impair
+        \begin{center}
+            \begin{minipage}{.5\linewidth}
+                \resizebox{\textwidth}{!}{
+%fig 3
+
+                }
+            \end{minipage}
+            \begin{minipage}{.49\linewidth}
+                \setlength{\parskip}{.3em}
+                \paragraph{Remarque:}
+                Centre de symétrie à l'origine.  $\forall a \in \mathbb{R}$,
+                il y a une unique solution
+
+                \paragraph{Remarque:}
+                Pour un $n$ impair, on admet l'écriture $$-\sqrt[n]{-a} = \sqrt[n]{a}$$
+                d'où $$S=\left\{\sqrt[n]{a}\right\}$$
+            \end{minipage}
+        \end{center}
+\end{itemize}
+
+\paragraph{Exemple:}
+
+$$
+\left.
+    \begin{array}{rl}
+    x^{4} = 16 & \text{ exposant $n = 4$  pair}\\
+     & 16 > 0\\
+    \end{array}
+\right\} 2 \text{ solution distinctes }
+$$
+$$S = \{-\sqrt[4]{16}, \sqrt[4]{16}\} = \{-2, 2\}$$
+
+\paragraph{Exemple:}
+
+$$x^{3} + 8 = 0 \iff x^{3} = -8\ (\text{exposant $n = 3$ impair})$$
+$$\implies S = \{\sqrt[3]{-8}\} = \{-2\}$$
+
+\paragraph{Conséquences:}
+
+\begin{itemize}
+    \item Soit $a \in \mathbb{R}^{*}$. Alors 
+        $$
+        \sqrt[n]{a^{n}} = 
+        \left\{
+            \begin{array}{ll}
+                a & \text{ si $n$ impair }\\
+                |a| & \text{ si $n$ est pair}\\
+            \end{array}
+        \right.
+        $$
+
+    \item Soient $a, b \in \mathbb{R}_{+}$ (condition de positivité). Alors 
+        \[
+            \begin{split}
+                a = b &\iff a^{n} = b^{n} \quad (n \in \mathbb{N}^{*})\\
+                a < b &\iff a^{n} < b^{n}
+            \end{split}
+        \]
+
+    \item Soient $a, b \in \mathbb{R}$ et $n$ impair. Alors 
+        \[
+            \begin{split}
+                a = b &\iff a^{n} = b^{n}\\
+                a < b &\iff a^{n} < b^{n}\\
+            \end{split}
+        \]
+        (car $x^{na}$ est strictement croissante)
+\end{itemize}
+
+\subsection{Équations et inéquations rationnelles}
+
+Dans une équation / inéquation du type
+$$\sqrt{f} = g \quad \sqrt{f} < g \quad \sqrt{f} > g$$
+
+on "veut élever au carré" pour faire tomber la $\sqrt{}$ % TODO look up how to do a sime \sqrt sign
+
+C'est en ordre si $\sqrt{f} \geq 0$ (c'est le cas!) et $g \geq 0$ (condition
+de positivité). D'où la discussion du signe de $g$.
+
+\paragraph{Théorème:}
+
+Soient $f$ et $g$ 2 fonctions réelles.
+
+Sur le domaine de définition (dont la condition $f(x) > 0$), on a
+l'équivalence 
+\begin{highlightBox}
+    $$\sqrt{f(x)} = g(x) \iff g(x) \geq 0 \quad \text{ et } \quad f(x) = g^{2}(x)$$
+\end{highlightBox}
+
+En effet si $g(x) < 0$, il n'y a pas de solution, car $\sqrt{f(x)} > 0$
+
+\paragraph{Théorème:}
+
+Soient $f, g$ 2 fonctions réelles sur $\mathbb{D}_{\text{déf}}$, on a
+l'équivalence 
+
+\begin{highlightBox}
+    $$\sqrt{f(x)} \leq g(x) \iff g(x) \geq 0 \quad \text{ et } \quad f(x) \leq
+    g^{2}(x)$$
+\end{highlightBox}
+
+En effet, si $g(x)< 0$, il n'y a pas de solution.
+
+\paragraph{Théorème:}
+
+Soient $f, g$ 2 fonctions réelles sur $\mathbb{D}_{\text{déf}}$ on a
+l'équivalence 
+
+\begin{highlightBox}
+    $$\sqrt{f(x)} > g(x) \iff 
+    \left\{
+        \begin{array}{l}
+        g(x) < 0\\
+        \text{ou}\\
+        g(x) \geq 0 \text{ et } f(x) > g^{2}(x)
+        \end{array}
+    \right.$$
+\end{highlightBox}
+
+En effet si $g(x) < 0$, tout $x$ est solution :
+$$\sqrt{f(x)} > 0 > \underbrace{g}_{<0}$$
+
+\paragraph{Exemple:}
+
+\begin{enumerate}
+    \item Résoudre en $x \in \mathbb{R}$ $$\sqrt{x^{2} - 3x + 6} = 4x - 6$$
+
+    \begin{itemize}
+        \item $\mathbb{D}_{\text{déf}}: x^{2}-3x + 6 \geq 0$ 
+            
+            comme $\Delta < 0, \mathbb{D}_{\text{déf}} = \mathbb{R}$
+        \item Condition de positivité. $$4x - 6 \geq 0$$
+
+            $$\implies \mathbb{D}_{\text{pos.}} = \left[\frac{3}{2}; + \infty \right[$$
+
+        \item Sur $\mathbb{D}_{\text{pos}}$, on peut élever au carré (équivalence!)
+
+            $$x^{2} - 3x + 6 = (4x - 6)^{2} = 16 x^{2} - 48 x + 36$$
+
+            \[
+                \begin{split}
+                    15 x ^{2} - 45 x + 30 &= 0\\
+                    x^{2} - 3 x + 3 &= 0\\
+                    (x -2 )\cdot (x -1 ) &= 0
+                \end{split}
+            \]
+            $$x = 1 \text{ ou } x = 2$$
+
+        \item Solution $$S = \mathbb{D}_{\text{déf}} \cap \mathbb{D}_{\text{pos.}}
+            \cap \{1; 2\} = \{2\}$$
+    \end{itemize}
+
+
+    \item Résoudre en $x \in \mathbb{R}$ en fonction du paramètre $m \in \mathbb{R}$
+    $$\sqrt{x + m^{2}} = x + m$$
+
+    \begin{itemize}
+        \item $\mathbb{D}_{\text{déf}} = [-m^{2}; + \infty[$
+        \item Condition de positivité: $$x + m > 0$$
+            $$\mathbb{D}_{\text{pos.}} = [-m; + \infty[$$
+
+        \item Dans $\mathbb{D}_{\text{pos}}$ élever au carré:
+            $$ x + m^{2} = (x + m)^{2} = x^{2} + 2xm + m^{2}$$
+            \[
+                \begin{split}
+                    x^{2} + 2mx - x &=0\\
+                    x\cdot (x +2m -1) &=0\\
+                \end{split}
+            \]
+
+            $$x = 0 \text{ ou } x = 1-2m$$
+
+        \item Voyons pour quelle valeur de $m$ les 2 valeurs sont solution
+            \begin{itemize}
+                \item $x = 0$ $$x = 0 \in \mathbb{D}_{\text{déf}} = [-m^{2}; +
+                    \infty[$$
+                    ceci est vérifié $\forall m \in \mathbb{R}$
+                    $$x = 0 \in \mathbb{D}_{\text{pos.}} = [-m ; + \infty[$$
+                    est vérifié $\forall m \geq 0$
+
+                    Donc $x = 0$ est solution $\forall m \in \mathbb{R}_{+}$
+
+                \item $x = 1 - 2m$ 
+                    \[
+                        \begin{split}
+                            &1 - 2m \in [-m^{2}; + \infty[\\
+                            \iff & 1 - 2 m \geq - m^{2}\\
+                            \iff & m^{2} -2m + 1 \geq 0\\
+                            \iff & (m-1) ^{2} \geq 0\\
+                            \iff & m \in \mathbb{R}\\
+                        \end{split}
+                    \]
+
+                    \[
+                        \begin{split}
+                            &1 - 2m \in [-m; + \infty[\\
+                            \iff & 1 - 2 m \geq - m\\
+                            \iff & m^{2} -2m + 1 \geq 0\\
+                            \iff & m \leq 1\\
+                        \end{split}
+                    \]
+                    Donc $x = 1 - 2m$ est solution si $m \leq 1$
+
+                    \begin{center}
+                        \begin{minipage}{.5\linewidth}
+                            \resizebox{\textwidth}{!}{
+% ask Zano for the slide
+                            }
+                        \end{minipage}
+                        \begin{minipage}{.49\linewidth}
+                            \setlength{\parskip}{.3em}
+                            \begin{itemize}
+                                \item $m < 0 : S = \{1-2m\}$
+                                \item $m \in [\ 0, 1\ ] : S = \{0, 1-2m\}$
+                                \item $m > 1 : S = \{0\}$
+                            \end{itemize}
+                        \end{minipage}
+                    \end{center}
+            \end{itemize}
+        \end{itemize}
+
+    \item Résoudre en $x \in \mathbb{R}$
+        $$\sqrt{6 - x} \leq  3 + 2x$$
+
+        \begin{itemize}
+            \item $\mathbb{D}_{\text{déf}} = ]-\infty; 6\ ]$
+            \item Condition de positivité $$3 + 2x \geq 0 \iff \mathbb{D}_{\text{pos.}}
+                = \left[\frac{3}{2}; + \infty\right[$$
+            \item Dans $\mathbb{D}_{\text{pos.}}$ élever au carré:
+                $$6 -x \leq (3 + 2x)^{2} = 9 + 12 x + 4 x^{2}$$
+                \[
+                    \begin{split}
+                        4x^{2} + 13 x + 3 & \geq 0\\
+                        (4x + 1) \cdot (x +3) &\geq 0\\
+                    \end{split}
+                \]
+                $$\implies S = ]-\infty; -3\ ] \cup \left[\ - \frac{1}{4};  + \infty\right[$$
+
+            \item  Solution finale
+                $$S_{\text{fin}} = \mathbb{D}_{\text{déf}} \cap
+                \mathbb{D}_{\text{pos.}} \cap S = \left[-\frac{1}{4}; 6\right]$$
+        \end{itemize}
+
+    \item  Résoudre en $x \in \mathbb{R}$
+        $$\sqrt{- x^{2} -x + 6} \geq x+1$$
+
+        \begin{itemize}
+            \item $\mathbb{D}_{\text{déf}}:$
+
+                \[
+                    \begin{split}
+                        &-x^{2} - x + 6 \geq 0\\
+                        \iff &? \\ %TODO second photo from zano
+                        \iff &? \\
+                    \end{split}
+                \]
+
+            \item Solution:
+
+                \[
+                    \begin{split}
+                        S &= \mathbb{D}_{\text{déf}} \cap (S_{1} \cap S_{2})\\
+                        &= [\ -3; 2 \ ] \cap ]-\infty; 1\ ] = [\ -3; 1\ ]
+                    \end{split}
+                \]
+        \end{itemize}
+
+\end{enumerate}
+
+
+% 09/04/2019
+
+
+\end{document}
